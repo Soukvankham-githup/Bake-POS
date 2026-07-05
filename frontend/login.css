@@ -1,0 +1,397 @@
+:root {
+    --bg: #1a1206;
+    --bg-warm: #2a1f0e;
+    --card: #352a16;
+    --accent: #f5a623;
+    --accent-light: #ffd166;
+    --accent-dark: #c47f0a;
+    --fg: #fff8e7;
+    --fg-muted: #bba880;
+    --border: #5a4828;
+    --danger: #e74c3c;
+    --success: #4caf50;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Noto Sans Lao', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(245, 166, 35, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(245, 166, 35, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(42, 31, 14, 1) 0%, var(--bg) 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ลอยเค้กพื้นหลัง */
+.bg-cake {
+    position: fixed;
+    font-size: 24px;
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 0;
+    animation: floatCake linear infinite;
+}
+
+@keyframes floatCake {
+    0% {
+        transform: translateY(110vh) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.05;
+    }
+
+    90% {
+        opacity: 0.05;
+    }
+
+    100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* กล่อง login */
+.login-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.login-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 32px 32px;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent));
+}
+
+/* โลโก้ */
+.login-brand {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.login-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: var(--bg);
+    margin: 0 auto 14px;
+    box-shadow: 0 8px 30px rgba(245, 166, 35, 0.25);
+}
+
+.login-brand h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent-light);
+}
+
+.login-brand p {
+    font-size: 12px;
+    color: var(--fg-muted);
+    margin-top: 4px;
+    letter-spacing: 1px;
+}
+
+/* สลับภาษา */
+.login-lang {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 28px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1.5px solid var(--border);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-lang button {
+    padding: 6px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.login-lang button:hover {
+    color: var(--fg);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.login-lang button.active {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+/* ฟอร์ม */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg-muted);
+    margin-bottom: 6px;
+}
+
+.form-input-wrap {
+    position: relative;
+}
+
+.form-input-wrap i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--fg-muted);
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.form-input {
+    width: 100%;
+    background: var(--bg-warm);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 42px 12px 42px;
+    color: var(--fg);
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s;
+    font-family: 'Noto Sans Lao', sans-serif;
+}
+
+.form-input::placeholder {
+    color: var(--fg-muted);
+    opacity: 0.5;
+}
+
+.form-input:focus {
+    border-color: var(--accent);
+}
+
+.form-input:focus+i,
+.form-input:focus~i {
+    color: var(--accent);
+}
+
+.form-input.error {
+    border-color: var(--danger);
+}
+
+/* แสดง/ซ่อนรหัส */
+.toggle-pass {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--fg-muted);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.toggle-pass:hover {
+    color: var(--accent);
+}
+
+/* ข้อความผิดพลาด */
+.form-error {
+    font-size: 11px;
+    color: var(--danger);
+    margin-top: 6px;
+    display: none;
+    align-items: center;
+    gap: 4px;
+}
+
+.form-error.show {
+    display: flex;
+}
+
+/* จดจำฉัน */
+.form-remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    cursor: pointer;
+}
+
+.form-remember input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.form-remember span {
+    font-size: 13px;
+    color: var(--fg-muted);
+}
+
+/* ปุ่ม login */
+.btn-login {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: var(--bg);
+    font-weight: 800;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    font-family: 'Noto Sans Lao', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-login:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(245, 166, 35, 0.35);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+}
+
+.btn-login:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-login .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid transparent;
+    border-top-color: var(--bg);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+}
+
+.btn-login.loading .spinner {
+    display: block;
+}
+
+.btn-login.loading .btn-login-text {
+    display: none;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* แจ้งเตือนล้มเหลว */
+.login-alert {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--danger);
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    animation: shakeX 0.4s ease-in-out;
+}
+
+.login-alert.show {
+    display: flex;
+}
+
+@keyframes shakeX {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-8px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(8px);
+    }
+}
+
+/* ข้อมูลทดสอบ */
+.login-hint {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 11px;
+    color: var(--fg-muted);
+    opacity: 0.5;
+    line-height: 1.6;
+}
+
+.login-hint code {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+}

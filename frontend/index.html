@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Bake — POS</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="floatingCakes" aria-hidden="true"></div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="modal-overlay" id="sizeModal">
+        <div class="modal-content" role="dialog" aria-label="Size">
+            <div id="sizeModalBody"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-content modal-payment" role="dialog" aria-label="Payment">
+            <div id="paymentModalBody"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="receiptModal">
+        <div class="modal-content modal-receipt" role="dialog" aria-label="Receipt">
+            <div id="receiptModalBody"></div>
+        </div>
+    </div>
+
+    <header class="pos-header">
+        <div class="header-inner">
+            <div class="header-brand">
+                <div class="brand-icon"><i class="fas fa-birthday-cake"></i></div>
+                <div>
+                    <h1 class="font-display brand-name">Best Bake</h1>
+                    <p class="brand-sub" id="posTitle"></p>
+                </div>
+            </div>
+            <div class="header-info">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="la" onclick="switchLang('la')">ລາວ</button>
+                    <button class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
+                </div>
+                <div class="header-datetime">
+                    <div id="currentDate"></div>
+                    <div id="currentTime"></div>
+                </div>
+                <div class="header-divider"></div>
+                <div class="header-status">
+                    <span class="pulse-dot"></span>
+                    <span id="onlineText"></span>
+                </div>
+                <button class="btn-outline" id="historyBtn" onclick="showOrderHistory()">
+                    <i class="fas fa-history"></i> <span id="historyBtnText"></span>
+                </button>
+            </div>
+            <button class="btn-logout" onclick="handleLogout()" title="Logout">
+                <i class="fas fa-sign-out-alt"></i> <span id="logoutText"></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-layout">
+        <section class="products-panel" aria-label="Products">
+            <div class="search-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-box" id="searchInput" oninput="filterProducts()" aria-label="Search">
+            </div>
+            <div class="category-tabs" id="categoryTabs" role="tablist"></div>
+            <div class="product-grid" id="productGrid"></div>
+            <div class="no-results" id="noResults">
+                <i class="fas fa-search"></i>
+                <p id="noResultsText"></p>
+            </div>
+        </section>
+
+        <aside class="cart-panel" aria-label="Cart">
+            <div class="cart-header">
+                <div class="cart-title-row">
+                    <div class="cart-title-group">
+                        <i class="fas fa-shopping-basket cart-title-icon"></i>
+                        <span class="cart-title-text" id="cartTitleText"></span>
+                        <span class="cart-badge" id="cartCount">0</span>
+                    </div>
+                    <button class="btn-danger-text" onclick="clearCart()" id="clearCartBtn" title="Clear"></button>
+                </div>
+                <div class="discount-row">
+                    <input type="text" id="discountInput" class="search-box discount-input"
+                        oninput="updateCartSummary()">
+                    <button class="btn-outline discount-btn" id="discountBtn" onclick="applyDiscount()"></button>
+                </div>
+            </div>
+
+            <div class="cart-items" id="cartItems">
+                <div class="empty-cart" id="emptyCart">
+                    <i class="fas fa-basket-shopping empty-icon"></i>
+                    <p class="empty-text-main" id="emptyCartMain"></p>
+                    <p class="empty-text-sub" id="emptyCartSub"></p>
+                </div>
+            </div>
+
+            <div class="cart-summary" id="cartSummary">
+                <div class="summary-row">
+                    <span id="subtotalLabel"></span>
+                    <span class="money" id="subtotalText">0.00</span>
+                </div>
+                <div class="summary-row summary-discount" id="discountRow">
+                    <span id="discountLabel"></span>
+                    <span class="money" id="discountText">-0.00</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-total-row">
+                    <span class="summary-total-label" id="totalLabel"></span>
+                    <span class="summary-total-value money font-display" id="totalText">0.00</span>
+                </div>
+                <div class="summary-actions">
+                    <button class="btn-outline" onclick="holdOrder()" id="holdBtn">
+                        <i class="fas fa-pause"></i> <span id="holdBtnText"></span>
+                    </button>
+                    <button class="btn-primary" onclick="openPayment()" id="payBtn">
+                        <i class="fas fa-wallet"></i> <span id="payBtnText"></span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="status-bar">
+        <div class="status-left">
+            <span id="billsTodayLabel"></span>
+            <strong id="todayOrders">0</strong>
+            <span id="salesTodayLabel"></span>
+            <strong class="money" id="todaySales">0.00</strong>
+        </div>
+        <span class="status-right" id="statusRight"></span>
+    </footer>
+    <script>
+        if (!sessionStorage.getItem('bb_user')) {
+            window.location.href = 'login.html';
+        }
+        function handleLogout() {
+            sessionStorage.removeItem('bb_user');
+            window.location.href = 'login.html';
+        }
+    </script>
+    <script src="lang.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

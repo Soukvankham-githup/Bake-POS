@@ -1,0 +1,1283 @@
+/* ================================================
+   CSS Variables
+   ================================================ */
+:root {
+    --bg: #1a1206;
+    --bg-warm: #2a1f0e;
+    --card: #352a16;
+    --card-hover: #42351d;
+    --accent: #f5a623;
+    --accent-light: #ffd166;
+    --accent-dark: #c47f0a;
+    --fg: #fff8e7;
+    --fg-muted: #bba880;
+    --border: #5a4828;
+    --success: #4caf50;
+    --danger: #e74c3c;
+    --info: #29b6f6;
+}
+
+/* ================================================
+   Reset & Base
+   ================================================ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Noto Sans Lao', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    overflow: hidden;
+    height: 100vh;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 10% 20%, rgba(245, 166, 35, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(245, 166, 35, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(42, 31, 14, 1) 0%, var(--bg) 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.font-display {
+    font-family: 'Noto Sans Lao', 'Playfair Display', serif;
+}
+
+/* บังคับฟอนต์ลาวทุก element */
+input,
+button,
+select,
+textarea,
+.cat-tab,
+.size-btn,
+.numpad-btn,
+.lang-btn,
+.toast,
+.search-box,
+.qty-btn,
+.btn-primary,
+.btn-outline,
+.btn-danger-text,
+.discount-btn {
+    font-family: 'Noto Sans Lao', sans-serif !important;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-dark);
+}
+
+/* ================================================
+   ปุ่มสลับภาษา
+   ================================================ */
+.lang-switcher {
+    display: flex;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1.5px solid var(--border);
+}
+
+.lang-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.lang-btn:hover {
+    color: var(--fg);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.lang-btn.active {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+/* ================================================
+   เฮดเดอร์
+   ================================================ */
+.pos-header {
+    background: linear-gradient(135deg, var(--bg-warm), rgba(42, 31, 14, 0.95));
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    z-index: 10;
+}
+
+.header-inner {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--bg);
+}
+
+.brand-name {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--accent-light);
+    line-height: 1.1;
+}
+
+.brand-sub {
+    font-size: 11px;
+    color: var(--fg-muted);
+    letter-spacing: 1px;
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-datetime {
+    text-align: right;
+}
+
+.header-datetime div:first-child {
+    font-size: 13px;
+    color: var(--fg);
+    font-weight: 600;
+}
+
+.header-datetime div:last-child {
+    font-size: 11px;
+    color: var(--fg-muted);
+}
+
+.header-divider {
+    width: 1px;
+    height: 30px;
+    background: var(--border);
+}
+
+.header-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--success);
+    font-weight: 600;
+}
+
+.pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* ================================================
+   เลย์เอาต์หลัก
+   ================================================ */
+.main-layout {
+    display: flex;
+    height: calc(100vh - 65px - 30px);
+    position: relative;
+    z-index: 1;
+}
+
+/* ================================================
+   แผงสินค้า
+   ================================================ */
+.products-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+}
+
+.search-wrapper {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--fg-muted);
+    font-size: 14px;
+}
+
+.search-box {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px 10px 40px;
+    color: var(--fg);
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.search-box::placeholder {
+    color: var(--fg-muted);
+    opacity: 0.6;
+}
+
+.search-box:focus {
+    border-color: var(--accent);
+}
+
+.discount-input {
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+}
+
+.category-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.cat-tab {
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    border: 1.5px solid transparent;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--fg-muted);
+}
+
+.cat-tab:hover {
+    color: var(--fg);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.cat-tab.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+    gap: 14px;
+}
+
+.no-results {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--fg-muted);
+}
+
+.no-results i {
+    font-size: 40px;
+    opacity: 0.3;
+    margin-bottom: 12px;
+    display: block;
+}
+
+/* ================================================
+   การ์ดสินค้า
+   ================================================ */
+.product-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.product-card:hover {
+    border-color: var(--accent-dark);
+    background: var(--card-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(245, 166, 35, 0.12);
+}
+
+.product-card:hover::before {
+    opacity: 1;
+}
+
+.product-card:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.product-card-body {
+    padding: 18px 14px 14px;
+    text-align: center;
+}
+
+.cake-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 8px;
+    position: relative;
+}
+
+.cake-icon::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px dashed rgba(245, 166, 35, 0.25);
+    animation: spin-slow 20s linear infinite;
+}
+
+@keyframes spin-slow {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.cake-emoji {
+    font-size: 32px;
+    position: relative;
+    z-index: 1;
+}
+
+.product-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    color: var(--fg);
+}
+
+.product-desc {
+    font-size: 11px;
+    color: var(--fg-muted);
+    margin-bottom: 10px;
+}
+
+.product-prices {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.product-price-group {
+    text-align: center;
+}
+
+.price-size-label {
+    font-size: 10px;
+    color: var(--fg-muted);
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.price-value {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--accent-light);
+}
+
+.price-divider {
+    width: 1px;
+    background: var(--border);
+}
+
+/* ================================================
+   แผงตะกร้า
+   ================================================ */
+.cart-panel {
+    width: 400px;
+    min-width: 360px;
+    background: var(--bg-warm);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-header {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.cart-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.cart-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cart-title-icon {
+    color: var(--accent);
+    font-size: 16px;
+}
+
+.cart-title-text {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.cart-badge {
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 20px;
+    min-width: 22px;
+    text-align: center;
+}
+
+.btn-danger-text {
+    background: transparent;
+    color: var(--danger);
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    font-size: 12px;
+    display: none;
+}
+
+.btn-danger-text:hover {
+    background: rgba(231, 76, 60, 0.15);
+}
+
+.discount-row {
+    display: flex;
+    gap: 8px;
+}
+
+.discount-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+    border-radius: 8px;
+}
+
+.cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--fg-muted);
+}
+
+.empty-icon {
+    font-size: 44px;
+    opacity: 0.15;
+    margin-bottom: 14px;
+    display: block;
+}
+
+.empty-text-main {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.empty-text-sub {
+    font-size: 12px;
+    opacity: 0.4;
+    margin-top: 4px;
+}
+
+.cart-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 10px 12px;
+    transition: all 0.2s;
+    animation: slideIn 0.3s ease-out;
+}
+
+.cart-item:hover {
+    background: rgba(245, 166, 35, 0.06);
+    border-color: rgba(245, 166, 35, 0.15);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.cart-item-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cart-item-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.cart-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart-item-name {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cart-item-detail {
+    font-size: 11px;
+    color: var(--fg-muted);
+}
+
+.btn-remove-item {
+    background: transparent;
+    color: var(--danger);
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    font-size: 13px;
+}
+
+.btn-remove-item:hover {
+    background: rgba(231, 76, 60, 0.15);
+}
+
+.cart-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.cart-qty-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cart-item-price {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--accent-light);
+}
+
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.qty-btn:hover {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+}
+
+.qty-btn-sm {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+}
+
+.qty-value {
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 24px;
+    text-align: center;
+}
+
+/* ================================================
+   สรุปยอด
+   ================================================ */
+.cart-summary {
+    display: none;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--fg-muted);
+}
+
+.summary-discount {
+    color: var(--danger);
+}
+
+.summary-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 10px 0;
+}
+
+.summary-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.summary-total-label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.summary-total-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--accent-light);
+}
+
+.summary-actions {
+    margin-top: 14px;
+    display: flex;
+    gap: 8px;
+}
+
+.summary-actions .btn-outline {
+    flex: 1;
+}
+
+.summary-actions .btn-primary {
+    flex: 2;
+}
+
+/* ================================================
+   ปุ่ม
+   ================================================ */
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: var(--bg);
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(245, 166, 35, 0.35);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--fg-muted);
+    font-weight: 600;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+}
+
+.btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent-light);
+}
+
+/* ================================================
+   โมดัล
+   ================================================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    background: var(--bg-warm);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 420px;
+    width: 90%;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-payment {
+    max-width: 460px;
+}
+
+.modal-receipt {
+    max-width: 380px;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.size-btn {
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.size-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent-light);
+}
+
+.size-btn.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(245, 166, 35, 0.3);
+}
+
+.size-btn-large {
+    flex: 1;
+    padding: 16px;
+    text-align: center;
+}
+
+.size-btn-small-label {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.size-btn-price {
+    font-size: 22px;
+    font-weight: 900;
+    margin-top: 4px;
+}
+
+/* ================================================
+   แป้นชำระเงิน
+   ================================================ */
+.numpad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.numpad-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--fg);
+    font-size: 20px;
+    font-weight: 700;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.numpad-btn:hover {
+    background: var(--card-hover);
+    border-color: var(--accent-dark);
+}
+
+.numpad-btn:active {
+    transform: scale(0.95);
+    background: var(--accent);
+    color: var(--bg);
+}
+
+.numpad-clear {
+    color: var(--danger);
+    font-size: 16px;
+}
+
+.quick-amounts {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.quick-amount-btn {
+    flex: 1;
+    min-width: 60px;
+    padding: 8px 4px;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+.payment-display-box {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.payment-display-label {
+    font-size: 11px;
+    color: var(--fg-muted);
+    margin-bottom: 4px;
+}
+
+.payment-display-value {
+    font-size: 28px;
+    font-weight: 900;
+    min-height: 38px;
+    color: var(--fg);
+}
+
+.payment-change {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 4px;
+    color: var(--success);
+}
+
+.payment-short {
+    color: var(--danger) !important;
+}
+
+.payment-modal-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.payment-modal-actions .btn-outline {
+    flex: 1;
+    padding: 14px;
+}
+
+.payment-modal-actions .btn-primary {
+    flex: 2;
+    padding: 14px;
+}
+
+/* ================================================
+   ใบเสร็จ
+   ================================================ */
+.receipt {
+    background: #fff;
+    color: #222;
+    border-radius: 12px;
+    padding: 24px 20px;
+    font-size: 13px;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.receipt-header {
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.receipt-brand {
+    font-size: 24px;
+    font-weight: 900;
+    font-family: 'Playfair Display', serif;
+    color: #c47f0a;
+}
+
+.receipt-contact {
+    font-size: 11px;
+    color: #888;
+}
+
+.receipt-line {
+    border-bottom: 1px dashed #ccc;
+    margin: 8px 0;
+}
+
+.receipt-table {
+    width: 100%;
+    font-size: 12px;
+    border-collapse: collapse;
+}
+
+.receipt-table th {
+    text-align: left;
+    padding: 4px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.receipt-table th:nth-child(2) {
+    text-align: center;
+}
+
+.receipt-table th:nth-child(3) {
+    text-align: right;
+}
+
+.receipt-table td {
+    padding: 4px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.receipt-table td:nth-child(2) {
+    text-align: center;
+}
+
+.receipt-table td:nth-child(3) {
+    text-align: right;
+}
+
+.receipt-item-sub {
+    font-size: 10px;
+    color: #999;
+}
+
+.receipt-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.receipt-summary-discount {
+    color: #e74c3c;
+}
+
+.receipt-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 900;
+    margin: 6px 0;
+}
+
+.receipt-total-value {
+    color: #c47f0a;
+}
+
+.receipt-footer {
+    text-align: center;
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 8px;
+}
+
+.receipt-footer-small {
+    font-size: 10px;
+}
+
+.receipt-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.receipt-actions .btn-outline {
+    flex: 1;
+    padding: 12px;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.receipt-actions .btn-primary {
+    flex: 1;
+    padding: 12px;
+}
+
+/* ================================================
+   โทสต์
+   ================================================ */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toast {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: toastIn 0.4s ease-out, toastOut 0.3s ease-in 2.5s forwards;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    min-width: 240px;
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes toastOut {
+    to {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+}
+
+/* ================================================
+   สถานะบาร์
+   ================================================ */
+.status-bar {
+    background: rgba(0, 0, 0, 0.4);
+    border-top: 1px solid var(--border);
+    padding: 6px 20px;
+    font-size: 11px;
+    color: var(--fg-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-right {
+    opacity: 0.6;
+}
+
+.money {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.3px;
+}
+
+/* ================================================
+   ลอยเค้ก
+   ================================================ */
+.floating-cake {
+    position: fixed;
+    font-size: 20px;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.06;
+    }
+
+    90% {
+        opacity: 0.06;
+    }
+
+    100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ================================================
+   Responsive
+   ================================================ */
+@media (max-width: 1024px) {
+    .main-layout {
+        flex-direction: column !important;
+    }
+
+    .products-panel {
+        max-height: 50vh;
+    }
+
+    .cart-panel {
+        max-height: 50vh;
+        width: 100% !important;
+        min-width: unset !important;
+    }
+}
+
+/* ================================================
+   Print
+   ================================================ */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .receipt,
+    .receipt * {
+        visibility: visible;
+    }
+
+    .receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+
+.btn-logout {
+    background: transparent;
+    color: var(--danger);
+    border: 1.5px solid var(--danger);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Sans Lao', sans-serif !important;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-logout:hover {
+    background: var(--danger);
+    color: #fff;
+}

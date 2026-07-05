@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Bake — Admin</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <!-- แถบด้านซ้าย -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-icon"><i class="fas fa-birthday-cake"></i></div>
+            <div class="sidebar-text">
+                <div class="font-display sidebar-name">Best Bake</div>
+                <div class="sidebar-role">Admin Panel</div>
+            </div>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="menu-item active" data-page="dashboard" onclick="switchPage('dashboard')">
+                <i class="fas fa-chart-pie"></i><span>ແດດຫຼງ</span>
+            </li>
+            <li class="menu-item" data-page="products" onclick="switchPage('products')">
+                <i class="fas fa-cake-candles"></i><span>ສິນຄ້າ</span>
+            </li>
+            <li class="menu-item" data-page="stock" onclick="switchPage('stock')">
+                <i class="fas fa-boxes-stacked"></i><span>ສະຕອກ</span>
+                <span class="alert-badge" id="stockAlertBadge" style="display:none;">0</span>
+            </li>
+            <li class="menu-item" data-page="orders" onclick="switchPage('orders')">
+                <i class="fas fa-receipt"></i><span>ປະຫວັດຂາຍ</span>
+            </li>
+            <li class="menu-item" data-page="reports" onclick="switchPage('reports')">
+                <i class="fas fa-chart-bar"></i><span>ລາຍງານ</span>
+            </li>
+            <li class="menu-item" data-page="members" onclick="switchPage('members')">
+                <i class="fas fa-users"></i><span>ສະມະສິກ</span>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <button class="btn-pos" onclick="window.open('index.html')">
+                <i class="fas fa-cash-register"></i> ເປີດ POS
+            </button>
+            <button class="btn-logout" onclick="handleLogout()">
+                <i class="fas fa-sign-out-alt"></i> ອອກ
+            </button>
+            <div class="sidebar-user">
+                <span id="adminName">Admin</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- เนื้อหลัก -->
+    <main class="main-content">
+        <header class="topbar">
+            <h2 class="page-title" id="pageTitle">ແດດຫຼງ</h2>
+            <div class="topbar-right">
+                <span id="topbarDate"></span>
+            </div>
+        </header>
+
+        <!-- ========== Dashboard ========== -->
+        <section class="page active" id="page-dashboard">
+            <div class="stats-grid">
+                <div class="stat-card stat-sales">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-label">ຍອດຂາຍມື້ນີ້ນ</div>
+                        <div class="stat-value money" id="statSales">0</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-bills">
+                    <div class="stat-icon"><i class="fas fa-receipt"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-label">ບິນມື້ນີ້ນ</div>
+                        <div class="stat-value" id="statBills">0</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-avg">
+                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-label">ສະເລສື່ບິນ</div>
+                        <div class="stat-value money" id="statAvg">0</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-low">
+                    <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-label">ສະຕອກໃ່ໝາ</div>
+                        <div class="stat-value" id="statLow">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">ຍອດຂາຍຕ້າຊົ່ມໂມງ</h3>
+                    <canvas id="hourlyChart" height="200"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">ສິນຄ້າຂາຍດີ 10</h3>
+                    <div id="topProductsList" class="top-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== Products ========== -->
+        <section class="page" id="page-products">
+            <div class="page-actions">
+                <button class="btn-accent" onclick="openProductModal()">
+                    <i class="fas fa-plus"></i> ເພີ່ມສິນຄ້າ
+                </button>
+            </div>
+            <div class="data-table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ຊື່</th>
+                            <th>ຊື່ລາວ</th>
+                            <th>ລາຄາ M</th>
+                            <th>ລາຄາ L</th>
+                            <th>ຫມວົດ</th>
+                            <th>ຈັດການ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ========== Stock ========== -->
+        <section class="page" id="page-stock">
+            <div class="page-actions">
+                <button class="btn-accent" onclick="openStockModal()">
+                    <i class="fas fa-plus"></i> ເພີ່ມສະຕອກ
+                </button>
+            </div>
+            <div id="stockAlerts" class="stock-alerts"></div>
+            <div class="data-table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ວັນດັບ</th>
+                            <th>ຈຳນນນ້ອນປະຈຸບ</th>
+                            <th>ຫນ້ອນ</th>
+                            <th>ຂັ້ນນ້ອນຕ່າງໝາ</th>
+                            <th>ສະຖະກັບ</th>
+                            <th>ສະຖະກັບ</th>
+                            <th>ຈັດການ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockTable"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ========== Orders ========== -->
+        <section class="page" id="page-orders">
+            <div class="page-actions">
+                <input type="date" class="form-input" id="orderDate" onchange="loadOrders()">
+            </div>
+            <div class="data-table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ເລກທີບິນ</th>
+                            <th>ພະນັກງານ</th>
+                            <th>ຍອດຮວມ</th>
+                            <th>ວິທີ</th>
+                            <th>ເວລົງ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ========== Reports ========== -->
+        <section class="page" id="page-reports">
+            <div class="report-filters">
+                <div class="filter-group">
+                    <label>ເດືອນ</label>
+                    <select class="form-input" id="reportYear" onchange="loadMonthlyReport()"></select>
+                </div>
+                <div class="filter-group">
+                    <label>ເດືອນ</label>
+                    <select class="form-input" id="reportMonth" onchange="loadMonthlyReport()"></select>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card stat-sales">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-label">ຍອດຂາຍເດືອນ</div>
+                        <div class="stat-value money" id="monthSales">0</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-bills">
+                    <div class="stat-icon"><i class="fas fa-receipt"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-label">ຈຳນນບິນ</div>
+                        <div class="stat-value" id="monthBills">0</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-avg">
+                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-label">ເຕີຂະຫວັດ %</div>
+                        <div class="stat-value" id="monthGrowth">0%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">ຍອດຂາຍແຕ່າວັນ</h3>
+                    <canvas id="dailyChart" height="250"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">ສິນຄ້າຂາຍດີ</h3>
+                    <div id="monthTopProducts" class="top-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== Members ========== -->
+        <section class="page" id="page-members">
+            <div class="page-actions">
+                <div class="search-inline">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-input" id="memberSearch" placeholder="ຄົ້ຫາເບັນໂທລະ..."
+                        oninput="searchMembers()">
+                </div>
+                <button class="btn-accent" onclick="openMemberModal()">
+                    <i class="fas fa-user-plus"></i> ເພີ່ມສະມະສິກ
+                </button>
+            </div>
+            <div class="data-table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ໂທດ</th>
+                            <th>ເບື່ນໂທລະ</th>
+                            <th>ຊື່ສະແອນ</th>
+                            <th>ແຕນ</th>
+                            <th>ແຈ້ຄື່</th>
+                            <th>ແລິກ</th>
+                            <th>ຈັດການ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="membersTable"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- โมดัลเพิ่มสินค้า -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h2 id="productModalTitle">ເພີ່ມສິນຄ້າ</h2>
+                <button class="btn-close" onclick="closeModal('productModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="productModalBody"></div>
+        </div>
+    </div>
+
+    <!-- โมดัลเพิ่มสต็อก -->
+    <div class="modal-overlay" id="stockModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>ເພີ່ມສະຕອກ</h2>
+                <button class="btn-close" onclick="closeModal('stockModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="form-group">
+                <label>ວັນດັບສະຕອກ</label>
+                <select class="form-input" id="stockIngredientId"></select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>ຈຳນນນ້ອນ</label>
+                    <input type="number" class="form-input" id="stockQty" min="1">
+                </div>
+                <div class="form-group">
+                    <label>ໝາການ</label>
+                    <input type="text" class="form-input" id="stockDesc" placeholder="ເພີ່ມສະຕອກ...">
+                </div>
+            </div>
+            <button class="btn-accent" onclick="addStock()" style="width:100%;">
+                <i class="fas fa-plus"></i> ເພີ່ມສະຕອກ
+            </button>
+        </div>
+    </div>
+
+    <!-- โมดัลเพิ่มสมาชิก -->
+    <div class="modal-overlay" id="memberModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>ເພີ່ມສະມະສິກ</h2>
+                <button class="btn-close" onclick="closeModal('memberModal')"><i class="fas fa-times"></button>
+            </div>
+            <div class="form-group">
+                <label>ເບື່ນໂທລະ</label>
+                <input type="text" class="form-input" id="memberPhone" placeholder="020XXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label>ຊື່ສະແອນ</label>
+                <input type="text" class="form-input" id="memberName" placeholder="ຊື່ສະແອນ...">
+            </div>
+            <button class="btn-accent" onclick="createMember()" style="width:100%;">
+                <i class="fas fa-user-plus"></i> ເພີ່ມສະມະສິກ
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>
